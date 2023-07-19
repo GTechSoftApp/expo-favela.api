@@ -1,36 +1,33 @@
 import { Router } from "express";
-import { sequelize } from "../../sql_connection/db_connection_server";
+import { conexaoString } from "../../sql_connection/connecttion";
+import * as sql from "mssql";
 
 const usersRoutes = Router();
 
 usersRoutes.post("/cadastro", async (request, response) => {
+  const { dadosUsuario } = request.body;
   try {
-    const { dadosCadastro } = request.body;
-    console.log(dadosCadastro);
+    const conexaoBanco = await sql.connect(conexaoString);
+    const resultado =
+      await conexaoBanco.query`select * from usuarios where email = ${dadosUsuario.email}`;
 
-    const [userEmailQuery] = await sequelize.query(
-      `select * from usuarios where email = '${dadosCadastro.email}'`
-    );
-
-    if (userEmailQuery.length == 0) {
-      const [createUser] = await sequelize.query(
-        `INSERT INTO usuarios
-      values('${dadosCadastro.nome}','${dadosCadastro.email}','${dadosCadastro.telefone}','${dadosCadastro.dataNascimento}','${dadosCadastro.ramoAtividade}',${dadosCadastro.receberNotificacao})`
-      );
+    if (resultado.recordset.length == 0) {
+      const usuarioCriado =
+        await conexaoBanco.query`INSERT INTO usuarios VALUES(${dadosUsuario.nome},${dadosUsuario.email},${dadosUsuario.telefone},
+      ${dadosUsuario.data_nascimento},${dadosUsuario.ramo_atividade},${dadosUsuario.receber_notificacao})`;
 
       return response.json({
-        messageStatus: "Cadastrado realizado com sucesso",
-        dados: dadosCadastro,
-        criado: createUser,
+        messageStatus: "Cadastro realizado com sucesso!",
+        usuario: usuarioCriado.recordset,
       });
     } else {
-      return response.json({ messageStatus: "Este e-mail já foi utilizado." });
+      return response.json({
+        messageStatus: "Este e-mail já foi utilizado.",
+      });
     }
   } catch (error) {
-    return response
-      .status(500)
-      .send({ messageStatus: "Erro ao realizar cadastro.", errorType: error });
+    return response.json({ messageStatus: error });
   }
+  return;
 });
-
 export default usersRoutes;
