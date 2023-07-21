@@ -3,14 +3,14 @@ import * as cors from "cors";
 import usersRoute from "./routes";
 import * as funcao from 'firebase-functions';
 import { initConnection } from "./sql_connection/connecttion";
-const port = process.env.PORT || 3000;
+
 
 const app = express();
 app.use(express.json());
 app.use(usersRoute);
 app.use(cors());
 initConnection();
-app.listen(port, () => {
+app.listen(3333, () => {
   console.log("Servidor on!");
 });
 
