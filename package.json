@@ -6,8 +6,8 @@
     "build:watch": "tsc --watch",
     "server": "npx nodemon src/server.ts",
     "start": "nodemon --exec npx ts-node src/routes/index.ts",
-    "tscomand":"tsc src/server.ts",
-    "serverjs":"node src/server.js"
+    "tscomand": "tsc src/server.ts",
+    "serverjs": "node src/server.js"
   },
   "engines": {
     "node": "18"
@@ -19,7 +19,10 @@
     "@types/mssql": "^8.1.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "mssql": "^9.1.1"
+    "msnodesqlv8": "^4.1.0",
+    "mssql": "^9.1.1",
+    "sequelize": "^6.32.1",
+    "sequelize-typescript": "^2.1.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
