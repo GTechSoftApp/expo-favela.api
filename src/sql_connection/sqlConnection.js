@@ -38,14 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.conexao = exports.novaBaseConnection = void 0;
 var sequelize = require("sequelize");
-var serverName = "SERVER";
+var serverName = "192.168.0.5";
 var dataBase = "expo_favela";
 var userName = "sa";
 var password = "##Heitor2021##";
 var instance = "SQLEXPRESS";
 var conexao = new sequelize.Sequelize(dataBase, userName, password, {
     host: serverName,
-    port: 49172,
+    port: 1433,
     dialect: "mssql",
     dialectOptions: { instanceName: instance, trustedConnection: true }
 });
