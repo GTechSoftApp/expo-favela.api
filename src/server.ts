@@ -8,8 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(usersRoute);
 app.use(cors());
-//initConnection();
 novaBaseConnection();
-app.listen(3333, () => {
-  console.log("Servidor on!");
+app.listen(5000, () => {
+  console.log("Servidor ouvindo!");
 });

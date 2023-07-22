@@ -10,15 +10,23 @@ const conexao = new sequelize.Sequelize(dataBase, userName, password, {
   host: serverName,
   port: 49172,
   dialect: "mssql",
-  dialectOptions: { instanceName: instance },
+  dialectOptions: { instanceName: instance, trustedConnection: true },
 });
 
 export async function novaBaseConnection() {
   try {
-    await conexao.authenticate().then(async (response) => {
-      console.log("Autenticado");
-    });
+    await conexao
+      .authenticate()
+      .then(async () => {
+        console.log("Conectado com sucesso!");
+      })
+      .catch((er) => {
+        console.log(`Erro na aplicação ${er}`);
+      });
+    
   } catch (error) {
-    console.log(`Erro na autenticação ${error}`);
+    console.log(`Erro encontrado ${error}`);
   }
 }
+
+export { conexao };

@@ -1,33 +1,37 @@
 import { Router } from "express";
-import { conexaoString } from "../../sql_connection/connecttion";
-import * as sql from "mssql";
+import { conexao } from "../../sql_connection/sqlConnection";
 
 const usersRoutes = Router();
 
+usersRoutes.get("/usuarios", async (request, response) => {
+  const [listarUsuarios] = await conexao.query("SELECT * FROM usuarios");
+  return response.json(listarUsuarios);
+});
+
 usersRoutes.post("/cadastro", async (request, response) => {
   const { dadosUsuario } = request.body;
+
   try {
-    const conexaoBanco = await sql.connect(conexaoString);
-    const resultado =
-      await conexaoBanco.query`select * from usuarios where email = ${dadosUsuario.email}`;
+    const [consultarEmail] = await conexao.query(
+      `SELECT * FROM USUARIOS U WHERE U.EMAIL = '${dadosUsuario.email}'`
+    );
 
-    if (resultado.recordset.length == 0) {
-      const usuarioCriado =
-        await conexaoBanco.query`INSERT INTO usuarios VALUES(${dadosUsuario.nome},${dadosUsuario.email},${dadosUsuario.telefone},
-      ${dadosUsuario.data_nascimento},${dadosUsuario.ramo_atividade},${dadosUsuario.receber_notificacao})`;
-
-      return response.json({
+    if (consultarEmail.length == 0) {
+      await conexao.query(
+        `INSERT INTO USUARIOS VALUES('${dadosUsuario.nome}','${dadosUsuario.email}','${dadosUsuario.telefone}','${dadosUsuario.data_nascimento}','${dadosUsuario.ramo_atividade}','${dadosUsuario.receber_notificacao}')`
+      );
+      response.json({
         messageStatus: "Cadastro realizado com sucesso!",
-        usuario: usuarioCriado.recordset,
+        usuario: dadosUsuario,
       });
     } else {
-      return response.json({
+      response.json({
         messageStatus: "Este e-mail já foi utilizado.",
       });
     }
   } catch (error) {
-    return response.json({ messageStatus: error });
+    response.status(500).send(`Erro no processamento dos dados ${error}`);
   }
-  return;
 });
+
 export default usersRoutes;
