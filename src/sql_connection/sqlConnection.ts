@@ -1,6 +1,6 @@
 import * as sequelize from "sequelize";
 
-const serverName = "SERVER";
+const serverName = "192.168.0.5";
 const dataBase = "expo_favela";
 const userName = "sa";
 const password = "##Heitor2021##";
