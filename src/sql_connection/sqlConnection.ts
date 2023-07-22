@@ -8,7 +8,7 @@ const instance = "SQLEXPRESS";
 
 const conexao = new sequelize.Sequelize(dataBase, userName, password, {
   host: serverName,
-  port: 49172,
+  port: 1433,
   dialect: "mssql",
   dialectOptions: { instanceName: instance, trustedConnection: true },
 });
