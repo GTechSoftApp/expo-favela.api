@@ -5,7 +5,9 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "server": "npx nodemon src/server.ts",
-    "start": "nodemon --exec npx ts-node src/routes/index.ts"
+    "start": "nodemon --exec npx ts-node src/routes/index.ts",
+    "tscomand":"tsc src/server.ts",
+    "serverjs":"node src/server.js"
   },
   "engines": {
     "node": "18"
